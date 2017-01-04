@@ -5,10 +5,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.ogm.testutil.MultiDriverTestClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.neo4j.examples.galaxy.context.GalaxyContext;
 import org.springframework.data.neo4j.examples.galaxy.domain.World;
 import org.springframework.data.neo4j.examples.galaxy.repo.WorldRepository;
@@ -21,6 +23,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 @ContextConfiguration(classes = {GalaxyContext.class})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -74,7 +77,7 @@ public class WorldRepositoryIT extends MultiDriverTestClass {
             }
         });
 
-        int iterations = 1000;
+        int iterations = 5;
 
         ExecutorService service = Executors.newFixedThreadPool(2);
         final CountDownLatch countDownLatch = new CountDownLatch(iterations * 2);

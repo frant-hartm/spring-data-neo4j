@@ -54,7 +54,7 @@ public class PropertyComparisonAdapter implements FunctionAdapter<Object> {
 
 	@Override
 	public FilterFunction<Object> filterFunction() {
-		return propertyComparison;
+		return new PropertyComparison(propertyComparison.getValue(), propertyComparison.getFilter());
 	}
 
 	@Override

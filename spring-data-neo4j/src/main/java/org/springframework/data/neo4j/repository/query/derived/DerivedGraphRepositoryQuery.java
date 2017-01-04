@@ -26,6 +26,8 @@ import org.neo4j.ogm.cypher.function.FilterFunction;
 import org.neo4j.ogm.cypher.query.Pagination;
 import org.neo4j.ogm.cypher.query.SortOrder;
 import org.neo4j.ogm.session.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.SliceImpl;
@@ -50,6 +52,8 @@ import org.springframework.data.repository.query.parser.PartTree;
  * @author Vince Bickers
  */
 public class DerivedGraphRepositoryQuery implements RepositoryQuery {
+
+	private static final Logger logger = LoggerFactory.getLogger(DerivedGraphRepositoryQuery.class);
 
 	private DerivedQueryDefinition queryDefinition;
 
@@ -132,7 +136,6 @@ public class DerivedGraphRepositoryQuery implements RepositoryQuery {
 	class FindByQuery implements RepositoryQuery {
 
 		public Object execute(Object[] parameters) {
-
 			ParameterAccessor accessor = new ParametersParameterAccessor(graphQueryMethod.getParameters(), parameters);
 			Pageable pageable = accessor.getPageable();
 			Sort sort = accessor.getSort();
@@ -233,8 +236,9 @@ public class DerivedGraphRepositoryQuery implements RepositoryQuery {
 		List<CypherFilter> cypherFilters = queryDefinition.getCypherFilters();
 		Filters queryParams = new Filters();
 		for (CypherFilter cypherFilter : cypherFilters) {
-			cypherFilter.functionAdapter.setValueFromArgs(params);
-			queryParams.add(cypherFilter.toFilter());
+			Filter filter = cypherFilter.toFilter();
+			filter.getFunction().setValue(params.get(cypherFilter.getPropertyPosition()));
+			queryParams.add(filter);
 		}
 		return queryParams;
 	}

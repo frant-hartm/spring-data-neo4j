@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.ogm.service.Components;
@@ -69,6 +70,7 @@ public class RestaurantIT extends MultiDriverTestClass {
 	 * @see DATAGRAPH-561
 	 */
 	@Test
+	@Ignore("can ignore this, don't use spatial...")
 	public void shouldFindRestaurantsNear_nameParameterFirst() {
 		Assume.assumeTrue(Components.neo4jVersion() >= 3);
 		Restaurant restaurant = new Restaurant("San Francisco International Airport (SFO)",
@@ -95,6 +97,7 @@ public class RestaurantIT extends MultiDriverTestClass {
 	 * @see DATAGRAPH-561
 	 */
 	@Test
+	@Ignore("we don't use spatial")
 	public void shouldFindRestaurantsNear_locationFirst() {
 		Assume.assumeTrue(Components.neo4jVersion() >= 3);
 		Restaurant restaurant = new Restaurant("San Francisco International Airport (SFO)",
